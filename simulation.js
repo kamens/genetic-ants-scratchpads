@@ -4,23 +4,23 @@
 var Simulation = {
 
     generation: 0,
-    maxGenerations: 100,
+    maxGenerations: 250,
 
     stepsThisGeneration: 0,
-    maxStepsPerGeneration: Board.path.length,
+    maxStepsPerGeneration: Board.path.length + 10,
 
     frameRate: 50,
-    stepsPerSecond: 25,
+    stepsPerSecond: 400,
 
     framesPerStep: null,
     currentStepFrame: null,
 
-    antsPerGeneration: 100,
+    antsPerGeneration: 1000,
     ants: null,
 
     init: function() {
         frameRate(this.frameRate);
-        this.framesPerStep = floor(this.frameRate / this.stepsPerSecond);
+        this.framesPerStep = ceil(this.frameRate / this.stepsPerSecond);
 
         Board.init();
         Scoreboard.possibleFitness = Board.path.length;
@@ -85,7 +85,7 @@ var Simulation = {
     createNewAnts: function() {
         this.ants = [];
         for (var i = 0; i < this.antsPerGeneration; i++) {
-            var genome = new Genome(Board.path.length);
+            var genome = new Genome(this.maxStepsPerGeneration);
             var ant = new Ant(genome);
             this.ants.push(ant);
         }
@@ -135,7 +135,7 @@ var Simulation = {
         }
 
         // STOPSHIP(kamens);
-        if (Scoreboard.maxFitness === Scoreboard.maxPossibleFitness) {
+        if (Scoreboard.maxFitness === Scoreboard.possibleFitness) {
             noLoop();
             println("WOOHOO");
         }
