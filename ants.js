@@ -34,14 +34,17 @@ var Ant = function(brain) {
     this.brain = brain;
     this.fitness = 0;
     this.position = [0,0];
+    this.lastPosition = [0,0];
 
     this.img = getImage("avatars/piceratops-seed");
     this.height = 50;
     this.width = 50;
 
     this.step = function() {
-        var dir = this.brain.nextDirection();
+        this.lastPosition[0] = this.position[0];
+        this.lastPosition[1] = this.position[1];
 
+        var dir = this.brain.nextDirection();
         if (dir === Directions.left) {
             this.position[0]--;
         } else if (dir === Directions.right) {
@@ -66,11 +69,22 @@ var Ant = function(brain) {
         }
     };
 
-    this.draw = function() {
+    this.draw = function(percentStepComplete) {
+
+        var xPos = Board.cellWidth * this.position[0];
+        var yPos = (Board.cellHeight * this.position[1] -
+                Board.negativeCellMargin * this.position[1]);
+
+        var xLastPos = Board.cellWidth * this.lastPosition[0];
+        var yLastPos = (Board.cellHeight * this.lastPosition[1] -
+                Board.negativeCellMargin * this.lastPosition[1]);
+
+        var dX = xPos - xLastPos;
+        var dY = yPos - yLastPos;
+
         image(this.img,
-                Board.cellWidth * this.position[0],
-                (Board.cellHeight * this.position[1] -
-                 Board.negativeCellMargin * this.position[1]),
+                xLastPos + dX * percentStepComplete,
+                yLastPos + dY * percentStepComplete,
                 this.width,
                 this.height);
     };
