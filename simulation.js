@@ -75,7 +75,8 @@ var Simulation = {
 
         this.ants = [];
         for (var i = 0; i < this.numAnts; i++) {
-            var ant = new Ant(RandomizedAntBrain);
+            var genome = new Genome(Board.path.length);
+            var ant = new Ant(genome);
             this.ants.push(ant);
         }
 
