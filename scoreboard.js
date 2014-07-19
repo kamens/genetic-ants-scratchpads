@@ -1,4 +1,6 @@
 var Scoreboard = {
+    
+    generation: 0,
 
     maxFitness: 0,
     possibleFitness: 0,
@@ -18,7 +20,8 @@ var Scoreboard = {
         var font = createFont("sans-serif", 60);
         textFont(font);
         textAlign(CENTER, CENTER);
-        text(this.maxFitness + " out of " + this.possibleFitness,
+        text((this.maxFitness + " out of " + this.possibleFitness +
+                    " (gen " + this.generation + ")"),
                 width / 2,
                 height - this.height / 2 - this.negativeMargin);
     }

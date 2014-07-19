@@ -1,6 +1,4 @@
 
-// Canvas size: 600 x 184
-
 var Board = {
     
     cols: 12,

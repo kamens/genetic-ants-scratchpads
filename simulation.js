@@ -1,30 +1,31 @@
+
+// Canvas size: 600 x 184
+
 var Simulation = {
 
-    steps: 0,
-    maxSteps: Board.path.length,
+    generation: 0,
+    maxGenerations: 2,
+
+    stepsThisGeneration: 0,
+    maxStepsPerGeneration: Board.path.length,
+
     frameRate: 50,
-    stepsPerSecond: 3,
+    stepsPerSecond: 4,
 
     framesPerStep: null,
     currentStepFrame: null,
 
-    numAnts: 3,
+    numAnts: 10,
     ants: [],
 
     init: function() {
         frameRate(this.frameRate);
-        this.framesPerStep = floor(
-                Simulation.frameRate / Simulation.stepsPerSecond);
-        this.currentStepFrame = 0;
+        this.framesPerStep = floor(this.frameRate / this.stepsPerSecond);
 
         Board.init();
         Scoreboard.possibleFitness = Board.path.length;
         
-        for (var i = 0; i < this.numAnts; i++) {
-            var ant = new Ant(RandomizedAntBrain);
-            this.ants.push(ant);
-        }
-
+        this.prepareNextGeneration();
     },
 
     step: function() {
@@ -42,14 +43,16 @@ var Simulation = {
 
         Scoreboard.maxFitness = maxFitness;
 
-        this.steps++;
+        this.stepsThisGeneration++;
+        this.currentStepFrame = 0;
     },
 
     draw: function() {
+        this.currentStepFrame++;
+
         Board.draw();
 
-        var percentStepComplete = (Simulation.currentStepFrame /
-                Simulation.framesPerStep);
+        var percentStepComplete = this.currentStepFrame / this.framesPerStep;
 
         for (var i = 0; i < this.ants.length; i++) {
             var ant = this.ants[i];
@@ -57,6 +60,40 @@ var Simulation = {
         }
 
         Scoreboard.draw();
+    },
+
+    prepareNextGeneration: function() {
+        if (this.generation >= this.maxGenerations) {
+            return false;
+        }
+
+        this.generation++;
+        Scoreboard.generation = this.generation;
+
+        this.stepsThisGeneration = 0;
+        this.currentStepFrame = 0;
+
+        this.ants = [];
+        for (var i = 0; i < this.numAnts; i++) {
+            var ant = new Ant(RandomizedAntBrain);
+            this.ants.push(ant);
+        }
+
+        return true;
+    },
+
+    prepareNextFrame: function() {
+        if (this.stepsThisGeneration >= this.maxStepsPerGeneration) {
+            if (!this.prepareNextGeneration()) {
+                return false;
+            }
+        }
+
+        if (this.currentStepFrame % this.framesPerStep === 0) {
+            this.step();
+        }
+
+        return true;
     }
 
 };
@@ -64,16 +101,10 @@ var Simulation = {
 Simulation.init();
 
 var draw = function() {
-    if (Simulation.steps >= Simulation.maxSteps) {
+    if (!Simulation.prepareNextFrame()) {
         noLoop();
         return;
     }
 
-    if (Simulation.currentStepFrame % Simulation.framesPerStep === 0) {
-        Simulation.step();
-        Simulation.currentStepFrame = 0;
-    }
-
-    Simulation.currentStepFrame++;
     Simulation.draw();
 };
