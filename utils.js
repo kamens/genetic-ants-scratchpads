@@ -3,6 +3,10 @@ var randInt = function(min, max) {
     return floor(random() * (max - min + 1) + min);
 };
 
+var randBool = function() {
+    return randInt(0, 1) === 0;
+};
+
 var Directions = {
     left: 0,
     right: 1,

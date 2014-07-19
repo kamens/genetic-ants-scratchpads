@@ -4,19 +4,19 @@
 var Simulation = {
 
     generation: 0,
-    maxGenerations: 2,
+    maxGenerations: 100,
 
     stepsThisGeneration: 0,
     maxStepsPerGeneration: Board.path.length,
 
     frameRate: 50,
-    stepsPerSecond: 4,
+    stepsPerSecond: 25,
 
     framesPerStep: null,
     currentStepFrame: null,
 
-    numAnts: 10,
-    ants: [],
+    antsPerGeneration: 100,
+    ants: null,
 
     init: function() {
         frameRate(this.frameRate);
@@ -73,14 +73,54 @@ var Simulation = {
         this.stepsThisGeneration = 0;
         this.currentStepFrame = 0;
 
+        if (!this.ants) {
+            this.createNewAnts();
+        } else {
+            this.breedBestAnts();
+        }
+
+        return true;
+    },
+
+    createNewAnts: function() {
         this.ants = [];
-        for (var i = 0; i < this.numAnts; i++) {
+        for (var i = 0; i < this.antsPerGeneration; i++) {
             var genome = new Genome(Board.path.length);
             var ant = new Ant(genome);
             this.ants.push(ant);
         }
+    },
 
-        return true;
+    breedBestAnts: function() {
+        var totalFitness = 0;
+        for (var i = 0; i < this.ants.length; i++) {
+            totalFitness += this.ants[i].fitness;
+        }
+
+        this.nextGenAnts = [];
+        for (var i = 0; i < this.antsPerGeneration; i++) {
+            var parentA = this.chooseFitParent(totalFitness);
+            var parentB = this.chooseFitParent(totalFitness);
+            var genome = parentA.genome.createCrossoverWith(parentB.genome);
+            var child = new Ant(genome);
+            this.nextGenAnts.push(child);
+        }
+        this.ants = this.nextGenAnts;
+    },
+
+    chooseFitParent: function(totalFitness) {
+        var randFitness = randInt(0, totalFitness);
+
+        var accumulatedFitness = 0;
+        for (var i = 0; i < this.ants.length; i++) {
+            var ant = this.ants[i];
+            accumulatedFitness += ant.fitness;
+            if (accumulatedFitness > randFitness) {
+                return ant;
+            }
+        }
+
+        return this.ants[this.ants.length - 1];
     },
 
     prepareNextFrame: function() {
@@ -92,6 +132,12 @@ var Simulation = {
 
         if (this.currentStepFrame % this.framesPerStep === 0) {
             this.step();
+        }
+
+        // STOPSHIP(kamens);
+        if (Scoreboard.maxFitness === Scoreboard.maxPossibleFitness) {
+            noLoop();
+            println("WOOHOO");
         }
 
         return true;
