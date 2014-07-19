@@ -6,7 +6,7 @@ var Scoreboard = {
     possibleFitness: 0,
 
     fontPxSize: 24,
-    height: 80,
+    height: 50,
 
     prettyPercent: function() {
         return ceil((this.maxFitness / this.possibleFitness) * 100) + "%";
@@ -16,7 +16,7 @@ var Scoreboard = {
         noStroke();
         fill(255, 255, 255);
         rect(0,
-                height - this.height,
+                0,
                 width,
                 this.height);
 
@@ -26,8 +26,8 @@ var Scoreboard = {
             fill(37, 143, 27);
             var font = createFont("sans-serif", this.fontPxSize);
             textFont(font);
-            textAlign(CENTER, CENTER);
-            text(msg, width / 2, height - this.height / 2);
+            textAlign(CENTER, TOP);
+            text(msg, width / 2, 10);
         }
     }
 

@@ -47,7 +47,7 @@ var Board = {
                         this.cellWidth * col,
                         (this.cellHeight * row -
                          (this.negativeCellMargin * row) -
-                         this.negativeBoardMargin),
+                         this.negativeBoardMargin + Scoreboard.height),
                         this.cellWidth,
                         this.cellHeight);
             }

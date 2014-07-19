@@ -77,7 +77,8 @@ var Ant = function(genome) {
 
         image(this.img,
                 xLastPos + dX * percentStepComplete,
-                yLastPos + dY * percentStepComplete - this.negativeMargin,
+                (yLastPos + dY * percentStepComplete -
+                 this.negativeMargin + Scoreboard.height),
                 this.width,
                 this.height);
     };
