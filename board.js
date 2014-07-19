@@ -61,5 +61,3 @@ var Board = {
     }
 
 };
-
-Board.draw();

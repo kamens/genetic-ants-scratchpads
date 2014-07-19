@@ -1,4 +1,8 @@
 
+var randInt = function(min, max) {
+    return floor(random() * (max - min + 1) + min);
+};
+
 var Directions = {
     left: 0,
     right: 1,
@@ -25,30 +29,49 @@ var RandomizedAntBrain = {
     }
 };
 
-var Ant = {
+var Ant = function(brain) {
 
-    brain: null,
-    fitness: 0,
-    position: [0,0],
+    this.brain = brain;
+    this.fitness = 0;
+    this.position = [0,0];
 
-    img: getImage("avatars/piceratops-seed"),
-    height: 50,
-    width: 50,
+    this.img = getImage("avatars/piceratops-seed");
+    this.height = 50;
+    this.width = 50;
 
-    step: function() {
+    this.step = function() {
+        var dir = this.brain.nextDirection();
 
-    },
+        if (dir === Directions.left) {
+            this.position[0]--;
+        } else if (dir === Directions.right) {
+            this.position[0]++;
+        } else if (dir === Directions.up) {
+            this.position[1]--;
+        } else if (dir === Directions.down) {
+            this.position[1]++;
+        }
 
-    draw: function() {
-        image(img,
-                board.cellWidth * position[0],
-                board.cellHeight * position[1],
-                width,
-                height);
-    }
+        if (this.position[0] < 0) {
+            this.position[0] = 0;
+        }
+        if (this.position[0] >= Board.cols) {
+            this.position[0] = Board.cols - 1;
+        }
+        if (this.position[1] < 0) {
+            this.position[1] = 0;
+        }
+        if (this.position[1] >= Board.rows) {
+            this.position[1] = Board.rows - 1;
+        }
+    };
+
+    this.draw = function() {
+        image(this.img,
+                Board.cellWidth * this.position[0],
+                Board.cellHeight * this.position[1],
+                this.width,
+                this.height);
+    };
 
 };
-
-function randInt(min, max) {
-    return floor(random() * (max - min + 1) + min);
-}
