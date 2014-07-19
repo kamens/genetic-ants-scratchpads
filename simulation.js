@@ -1,5 +1,10 @@
 
 // Canvas size: 600 x 184
+//
+// Perhaps nice visualization:
+//  frameRate 50
+//  stepsPerSecond 25
+//  antsPerGeneration 10
 
 var Simulation = {
 
@@ -10,13 +15,13 @@ var Simulation = {
     // 20 extra steps allowed around the board
     maxStepsPerGeneration: Board.path.length + 20,
 
-    frameRate: 60,
-    stepsPerSecond: 400,
+    frameRate: 50,
+    stepsPerSecond: 25,
 
     framesPerStep: null,
     currentStepFrame: null,
 
-    antsPerGeneration: 1000,
+    antsPerGeneration: 10,
     ants: null,
 
     init: function() {
@@ -94,7 +99,7 @@ var Simulation = {
 
     breedBestAnts: function() {
         var totalFitness = 0;
-        var topFitness = 0;
+        var topFitness = -1;
         var topAnt;
         for (var i = 0; i < this.ants.length; i++) {
             var ant = this.ants[i];
@@ -107,16 +112,19 @@ var Simulation = {
         }
 
         // Always include the top ant
-        this.nextGenAnts = [topAnt];
+        var topGenome = new Genome(this.maxStepsPerGeneration);
+        topGenome.directions = topAnt.genome.directions.slice(0);
+        this.nextGenAnts = [new Ant(topGenome)];
 
         // And then breed the rest based on percentages weighted by fitness
-        for (var i = 1; i < this.antsPerGeneration; i++) {
+        while (this.nextGenAnts.length < this.antsPerGeneration) {
             var parentA = this.chooseFitParent(totalFitness);
             var parentB = this.chooseFitParent(totalFitness);
             var genome = parentA.genome.createCrossoverWith(parentB.genome);
             var child = new Ant(genome);
             this.nextGenAnts.push(child);
         }
+
         this.ants = this.nextGenAnts;
     },
 
