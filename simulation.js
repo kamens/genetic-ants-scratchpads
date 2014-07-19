@@ -2,10 +2,13 @@ var Simulation = {
 
     iterations: 0,
     maxIterations: 50,
+    frameRate: 10,
 
     ants: [],
 
     init: function() {
+        frameRate(this.frameRate);
+        
         var ant = new Ant(RandomizedAntBrain);
         this.ants.push(ant);
     },

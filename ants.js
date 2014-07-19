@@ -69,7 +69,8 @@ var Ant = function(brain) {
     this.draw = function() {
         image(this.img,
                 Board.cellWidth * this.position[0],
-                Board.cellHeight * this.position[1],
+                (Board.cellHeight * this.position[1] -
+                 Board.negativeCellMargin * this.position[1]),
                 this.width,
                 this.height);
     };

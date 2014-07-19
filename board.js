@@ -9,7 +9,7 @@ var Board = {
     cellWidth: 50,
     cellHeight: 75,
 
-    negativeCellMargin: 14,
+    negativeCellMargin: 38,
     negativeBoardMargin: 18,
 
     imgStone: getImage("cute/StoneBlock"),
@@ -50,7 +50,7 @@ var Board = {
                 var img = this.grid[col][row] ? this.imgGrass : this.imgStone;
                 image(img,
                         this.cellWidth * col,
-                        (this.cellWidth * row -
+                        (this.cellHeight * row -
                          (this.negativeCellMargin * row) -
                          this.negativeBoardMargin),
                         this.cellWidth,
@@ -61,3 +61,4 @@ var Board = {
     }
 
 };
+
