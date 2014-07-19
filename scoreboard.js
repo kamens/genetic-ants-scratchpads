@@ -5,14 +5,13 @@ var Scoreboard = {
     maxFitness: 0,
     possibleFitness: 0,
 
-    height: 60,
-    negativeMargin: 10,
+    height: 80,
 
     draw: function() {
         noStroke();
         fill(255, 255, 255);
         rect(0,
-                height - this.height - this.negativeMargin,
+                height - this.height,
                 width,
                 this.height);
 
@@ -23,7 +22,7 @@ var Scoreboard = {
         text((this.maxFitness + " out of " + this.possibleFitness +
                     " (gen " + this.generation + ")"),
                 width / 2,
-                height - this.height / 2 - this.negativeMargin);
+                height - this.height / 2);
     }
 
 };
