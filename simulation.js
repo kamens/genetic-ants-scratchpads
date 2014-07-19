@@ -37,17 +37,10 @@ var Simulation = {
     step: function() {
         Board.draw();
 
-        var maxFitness = 0;
         for (var i = 0; i < this.ants.length; i++) {
             var ant = this.ants[i];
             ant.step();
-
-            if (ant.fitness > maxFitness) {
-                maxFitness = ant.fitness;
-            }
         }
-
-        Scoreboard.maxFitness = maxFitness;
 
         this.stepsThisGeneration++;
         this.currentStepFrame = 0;
@@ -68,13 +61,29 @@ var Simulation = {
         Scoreboard.draw();
     },
 
+    updateScoreboard: function() {
+        Scoreboard.generation = this.generation;
+
+        var maxFitness = 0;
+        if (this.ants) {
+            for (var i = 0; i < this.ants.length; i++) {
+                var ant = this.ants[i];
+                if (ant.fitness > maxFitness) {
+                    maxFitness = ant.fitness;
+                }
+            }
+        }
+        Scoreboard.maxFitness = maxFitness;
+    },
+
     prepareNextGeneration: function() {
         if (this.generation >= this.maxGenerations) {
             return false;
         }
 
+        this.updateScoreboard();
+
         this.generation++;
-        Scoreboard.generation = this.generation;
 
         this.stepsThisGeneration = 0;
         this.currentStepFrame = 0;
