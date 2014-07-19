@@ -7,9 +7,10 @@ var Simulation = {
     maxGenerations: 250,
 
     stepsThisGeneration: 0,
-    maxStepsPerGeneration: Board.path.length + 10,
+    // 20 extra steps allowed around the board
+    maxStepsPerGeneration: Board.path.length + 20,
 
-    frameRate: 50,
+    frameRate: 60,
     stepsPerSecond: 400,
 
     framesPerStep: null,
@@ -93,12 +94,23 @@ var Simulation = {
 
     breedBestAnts: function() {
         var totalFitness = 0;
+        var topFitness = 0;
+        var topAnt;
         for (var i = 0; i < this.ants.length; i++) {
-            totalFitness += this.ants[i].fitness;
+            var ant = this.ants[i];
+            if (ant.fitness > topFitness) {
+                topFitness = ant.fitness;
+                topAnt = ant;
+            }
+
+            totalFitness += ant.fitness;
         }
 
-        this.nextGenAnts = [];
-        for (var i = 0; i < this.antsPerGeneration; i++) {
+        // Always include the top ant
+        this.nextGenAnts = [topAnt];
+
+        // And then breed the rest based on percentages weighted by fitness
+        for (var i = 1; i < this.antsPerGeneration; i++) {
             var parentA = this.chooseFitParent(totalFitness);
             var parentB = this.chooseFitParent(totalFitness);
             var genome = parentA.genome.createCrossoverWith(parentB.genome);
