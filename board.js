@@ -18,14 +18,13 @@ var Board = {
     // Maybe generate randomly?
     path: [
         [0,3], [1,3], [1,2], [2,2], [3,2], [3,3], [3,4], [4,4],
-        [5,4], [5,5], [5,6], [6,6], [6,5], [6,4], [6,3], [6,2],
-        [6,1], [6,0], [7,0], [7,1], [8,1], [8,2], [9,2], [10,2],
-        [10,1], [11,1], [11,2], [11,3], [11,4], [11,5]
+        [5,4], [6,4], [6,3], [6,2], [6,1], [6,0], [7,0], [7,1],
+        [8,1], [8,2], [9,2], [10,2], [10,1], [11,1], [11,2], [11,3], [11,4]
     ],
 
     grid: [],
 
-    generateGrid: function() {
+    init: function() {
 
         for (var col = 0; col < this.cols; col++) {
             this.grid[col] = [];
@@ -42,8 +41,6 @@ var Board = {
     },
 
     draw: function() {
-
-        this.generateGrid();
 
         for (var col = 0; col < this.cols; col++) {
             for (var row = 0; row < this.rows; row++) {

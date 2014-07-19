@@ -1,13 +1,14 @@
 var Simulation = {
 
-    iterations: 0,
-    maxIterations: 50,
+    steps: 0,
+    maxSteps: Board.path.length,
     frameRate: 50,
     stepsPerSecond: 3,
 
     framesPerStep: null,
     currentStepFrame: null,
 
+    numAnts: 3,
     ants: [],
 
     init: function() {
@@ -15,20 +16,33 @@ var Simulation = {
         this.framesPerStep = floor(
                 Simulation.frameRate / Simulation.stepsPerSecond);
         this.currentStepFrame = 0;
+
+        Board.init();
+        Scoreboard.possibleFitness = Board.path.length;
         
-        var ant = new Ant(RandomizedAntBrain);
-        this.ants.push(ant);
+        for (var i = 0; i < this.numAnts; i++) {
+            var ant = new Ant(RandomizedAntBrain);
+            this.ants.push(ant);
+        }
+
     },
 
     step: function() {
         Board.draw();
 
+        var maxFitness = 0;
         for (var i = 0; i < this.ants.length; i++) {
             var ant = this.ants[i];
             ant.step();
+
+            if (ant.fitness > maxFitness) {
+                maxFitness = ant.fitness;
+            }
         }
 
-        this.iterations++;
+        Scoreboard.maxFitness = maxFitness;
+
+        this.steps++;
     },
 
     draw: function() {
@@ -41,6 +55,8 @@ var Simulation = {
             var ant = this.ants[i];
             ant.draw(percentStepComplete);
         }
+
+        Scoreboard.draw();
     }
 
 };
@@ -48,7 +64,7 @@ var Simulation = {
 Simulation.init();
 
 var draw = function() {
-    if (Simulation.iterations >= Simulation.maxIterations) {
+    if (Simulation.steps >= Simulation.maxSteps) {
         noLoop();
         return;
     }
