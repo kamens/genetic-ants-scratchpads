@@ -15,6 +15,9 @@ var CrossoverViewer = {
     genomeViewerB: null,
     genomeViewerC: null,
 
+    genomeViewerCParentA: null,
+    genomeViewerCParentB: null,
+
     init: function() {
         this.genomeA = new Genome(this.genomeLength, { mutationRate: 0 });
         this.genomeB = new Genome(this.genomeLength, { mutationRate: 0 });
@@ -38,6 +41,22 @@ var CrossoverViewer = {
             top: 180,
             textRGB: [4, 167, 220]
         });
+
+        this.genomeViewerCParentA = new GenomeViewer(this.antC, {
+            top: 160,
+            textRGB: [0, 0, 0, 180],
+            showBackground: false,
+            showAnt: false,
+            onlyShowGenomeFromParent: GenomeParent.ParentA
+        });
+
+        this.genomeViewerCParentB = new GenomeViewer(this.antC, {
+            top: 140,
+            textRGB: [0, 0, 0, 180],
+            showBackground: false,
+            showAnt: false,
+            onlyShowGenomeFromParent: GenomeParent.ParentB
+        });
     },
 
     drawBackground: function() {
@@ -48,18 +67,10 @@ var CrossoverViewer = {
 
     drawBigText: function(s, y) {
         fill(0, 0, 0);
-        var font = createFont("sans-serif", 36);
+        var font = createFont("sans-serif", 26);
         textFont(font);
         textAlign(CENTER, TOP);
         text(s, width / 2, y);
-    },
-
-    drawPlus: function() {
-        this.drawBigText("breeds with", 54);
-    },
-
-    drawEquals: function() {
-        this.drawBigText("to create", 142);
     },
 
     draw: function() {
@@ -67,8 +78,13 @@ var CrossoverViewer = {
         this.genomeViewerA.draw();
         this.genomeViewerB.draw();
         this.genomeViewerC.draw();
-        this.drawPlus();
-        this.drawEquals();
+
+        // STOPSHIP(kamens)
+        // this.genomeViewerCParentA.draw();
+        // this.genomeViewerCParentB.draw();
+
+        this.drawBigText("breeds with", 60);
+        this.drawBigText("to create", 146);
     }
 
 };

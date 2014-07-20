@@ -36,7 +36,9 @@ var Simulation = {
         this.prepareNextGeneration();
 
         if (this.showGenomeViewer) {
-            this.genomeViewer = new GenomeViewer(this.ants[0]);
+            this.genomeViewer = new GenomeViewer(this.ants[0], {
+                highlightCurrentIndex: true
+            });
         }
     },
 
