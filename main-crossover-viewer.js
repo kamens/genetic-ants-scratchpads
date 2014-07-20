@@ -6,7 +6,11 @@
 CrossoverViewer.init();
 
 var draw = function() {
-    // STOPSHIP(kamens): figure out noloop
+    if (!CrossoverViewer.prepareNextFrame()) {
+        noLoop();
+        return;
+    }
+
     CrossoverViewer.draw();
 };
 

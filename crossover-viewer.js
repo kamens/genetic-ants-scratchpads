@@ -1,6 +1,12 @@
 
 var CrossoverViewer = {
 
+    frameRate: 50,
+    currentFrame: 0,
+
+    animationSeconds: 6,
+    percentAnimationComplete: 0,
+
     genomeLength: 12,
 
     genomeA: null,
@@ -19,6 +25,10 @@ var CrossoverViewer = {
     genomeViewerCParentB: null,
 
     init: function() {
+        frameRate(this.frameRate);
+        this.animationFrames = this.frameRate * this.animationSeconds;
+        this.percentAnimationComplete = 0;
+
         this.genomeA = new Genome(this.genomeLength, { mutationRate: 0 });
         this.genomeB = new Genome(this.genomeLength, { mutationRate: 0 });
         this.genomeC = this.genomeA.createCrossoverWith(this.genomeB);
@@ -67,26 +77,61 @@ var CrossoverViewer = {
         rect(0, 0, width, height);
     },
 
-    drawBigText: function(s, y) {
-        fill(0, 0, 0);
+    drawBigText: function(s, y, alpha) {
+        fill(0, 0, 0, alpha);
         var font = createFont("sans-serif", 26);
         textFont(font);
         textAlign(CENTER, TOP);
         text(s, width / 2, y);
     },
 
+    fadeInBreedsWith: function() {
+        var alpha = 255 * this.percentForCurrentAnimation(0.15, 0.25);
+        this.drawBigText("breeds with", 60, alpha);
+    },
+
+    fadeInToCreate: function() {
+        var alpha = 255 * this.percentForCurrentAnimation(0.42, 0.52);
+        this.drawBigText("to create", 146, alpha);
+    },
+
+    slideInGenomeViewerB: function() {
+        var left = width * (1 - this.percentForCurrentAnimation(0.3, 0.35));
+        this.genomeViewerB.left = left;
+        this.genomeViewerB.draw();
+    },
+
+    percentForCurrentAnimation: function(startFadeIn, endFadeIn) {
+        var percent = min(1,
+                (max(0, this.percentAnimationComplete - startFadeIn) /
+                 (endFadeIn - startFadeIn)));
+        return percent;
+    },
+
+    prepareNextFrame: function() {
+        // Approximation of end of animation. Oh well.
+        if (this.currentFrame > this.animationFrames) {
+            return false;
+        }
+
+        this.currentFrame++;
+        this.percentAnimationComplete = (this.currentFrame /
+                this.animationFrames);
+        return true;
+    },
+
     draw: function() {
         this.drawBackground();
         this.genomeViewerA.draw();
-        this.genomeViewerB.draw();
+        this.slideInGenomeViewerB();
         this.genomeViewerC.draw();
 
         // STOPSHIP(kamens)
-        // this.genomeViewerCParentA.draw();
-        // this.genomeViewerCParentB.draw();
+        //this.genomeViewerCParentA.draw();
+        //this.genomeViewerCParentB.draw();
 
-        this.drawBigText("breeds with", 60);
-        this.drawBigText("to create", 146);
+        this.fadeInBreedsWith();
+        this.fadeInToCreate();
     }
 
 };

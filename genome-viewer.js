@@ -6,6 +6,7 @@ var GenomeViewer = function(ant, options) {
     this.showBackground = true;
     this.fontPxSize = 20;
     this.height = 50;
+    this.left = 0;
     this.top = 0;
     this.textRGB = [0, 0, 0];
     this.highlightCurrentIndex = false;
@@ -26,10 +27,7 @@ var GenomeViewer = function(ant, options) {
     this.drawBackground = function() {
         noStroke();
         fill(255, 255, 255);
-        rect(0,
-                this.top,
-                width,
-                this.height);
+        rect(this.left, this.top, width, this.height);
     };
 
     this.setTextProperties = function(rgb) {
@@ -58,7 +56,9 @@ var GenomeViewer = function(ant, options) {
         var pastDirectionsWidth = this.directionTextWidth(pastDirections);
 
         this.setTextProperties([37, 143, 27]);
-        text(highlightArrow, 60 + pastDirectionsWidth, this.top + 15);
+        text(highlightArrow,
+                this.left + 60 + pastDirectionsWidth,
+                this.top + 15);
     };
 
     this.draw = function() {
@@ -68,7 +68,7 @@ var GenomeViewer = function(ant, options) {
 
         if (this.showAnt) {
             image(this.ant.img,
-                    10,
+                    this.left + 10,
                     this.top - 2,
                     this.ant.width,
                     this.ant.height);
@@ -101,13 +101,14 @@ var GenomeViewer = function(ant, options) {
 
             this.setTextProperties(this.textRGB);
             text(this.genomeAsText(directionsToDraw),
-                    60 + prefixWidth, this.top + 15);
+                    this.left + 60 + prefixWidth,
+                    this.top + 15);
 
         } else {
             var genomeText = "= " + this.genomeAsText(directions) + "...";
 
             this.setTextProperties(this.textRGB);
-            text(genomeText, 60, this.top + 15);
+            text(genomeText, this.left + 60, this.top + 15);
 
             if (this.highlightCurrentIndex) {
                 this.drawHighlightedCurrentIndex(directions);
