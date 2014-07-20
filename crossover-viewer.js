@@ -42,16 +42,13 @@ var CrossoverViewer = {
         });
 
         this.genomeViewerA = new GenomeViewer(this.antA, {
-            textRGB: [219, 61, 60],
-            top: 6
+            textRGB: [219, 61, 60]
         });
         this.genomeViewerB = new GenomeViewer(this.antB, {
-            top: 96,
             textRGB: [121, 169, 70]
         });
         this.genomeViewerC = new GenomeViewer(this.antC, {
-            top: 180,
-            textRGB: [4, 167, 220]
+            textRGB: [4, 167, 220, 0]
         });
 
         this.genomeViewerCParentA = new GenomeViewer(this.antC, {
@@ -95,10 +92,28 @@ var CrossoverViewer = {
         this.drawBigText("to create", 146, alpha);
     },
 
+    slideInGenomeViewerA: function() {
+        var finalTop = 6;
+        var top = finalTop + ((height - finalTop) *
+                (1 - this.percentForCurrentAnimation(0.0, 0.05)));
+        this.genomeViewerA.top = top;
+        this.genomeViewerA.draw();
+    },
+
     slideInGenomeViewerB: function() {
-        var left = width * (1 - this.percentForCurrentAnimation(0.3, 0.35));
-        this.genomeViewerB.left = left;
+        var finalTop = 96;
+        var top = finalTop + ((height - finalTop) *
+                (1 - this.percentForCurrentAnimation(0.3, 0.35)));
+        this.genomeViewerB.top = top;
         this.genomeViewerB.draw();
+    },
+
+    slideInGenomeViewerC: function() {
+        var finalTop = 180;
+        var top = finalTop + ((height - finalTop) *
+                (1 - this.percentForCurrentAnimation(0.6, 0.65)));
+        this.genomeViewerC.top = top;
+        this.genomeViewerC.draw();
     },
 
     percentForCurrentAnimation: function(startFadeIn, endFadeIn) {
@@ -122,9 +137,10 @@ var CrossoverViewer = {
 
     draw: function() {
         this.drawBackground();
-        this.genomeViewerA.draw();
+
+        this.slideInGenomeViewerA();
         this.slideInGenomeViewerB();
-        this.genomeViewerC.draw();
+        this.slideInGenomeViewerC();
 
         // STOPSHIP(kamens)
         //this.genomeViewerCParentA.draw();
