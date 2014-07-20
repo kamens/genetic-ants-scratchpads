@@ -124,7 +124,7 @@ var MutationViewer = {
     slideInGenomeViewerC: function() {
         var endTop = 150;
         var top = endTop + ((height - endTop) *
-                (1 - this.percentForCurrentAnimation(0.01, 0.06)));
+                (1 - this.percentForCurrentAnimation(0.05, 0.1)));
         this.genomeViewerC.top = top;
         this.genomeViewerC.draw();
     },
@@ -139,7 +139,7 @@ var MutationViewer = {
     },
 
     fadeAndSlideGenomeViewerCParentA: function() {
-        var alpha = 255 * this.percentForCurrentAnimation(0, 0.01);
+        var alpha = 255 * this.percentForCurrentAnimation(0.05, 0.1);
 
         var percentOut = this.percentForCurrentAnimation(0.4, 0.48);
         if (percentOut > 0) {
@@ -154,7 +154,7 @@ var MutationViewer = {
         var endTop = this.genomeViewerC.top;
         this.genomeViewerCParentA.top = startTop + (
                 ((endTop - startTop) *
-                 this.percentForCurrentAnimation(0.01, 0.06)));
+                 this.percentForCurrentAnimation(0.05, 0.1)));
 
         this.genomeViewerCParentA.left = this.genomeViewerA.left;
 
@@ -162,7 +162,7 @@ var MutationViewer = {
     },
 
     fadeAndSlideGenomeViewerCParentB: function() {
-        var alpha = 255 * this.percentForCurrentAnimation(0, 0.01);
+        var alpha = 255 * this.percentForCurrentAnimation(0.05, 0.1);
 
         var percentOut = this.percentForCurrentAnimation(0.4, 0.48);
         if (percentOut > 0) {
@@ -177,7 +177,7 @@ var MutationViewer = {
         var endTop = this.genomeViewerC.top;
         this.genomeViewerCParentB.top = startTop + (
                 ((endTop - startTop) *
-                 this.percentForCurrentAnimation(0.01, 0.06)));
+                 this.percentForCurrentAnimation(0.05, 0.1)));
 
         this.genomeViewerCParentB.left = this.genomeViewerB.left;
         this.genomeViewerCParentB.draw();
