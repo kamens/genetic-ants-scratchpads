@@ -41,14 +41,6 @@ var Genome = function(length) {
         return crossover;
     };
 
-    this.descriptions = function() {
-        var descriptions = [];
-        for (var i = 0; i < this.directions.length; i++) {
-            descriptions.push(Directions.getDescription(this.directions[i]));
-        }
-        return descriptions;
-    };
-
     this.randomize = function() {
         for (var i = 0; i < length; i++) {
             this.directions[i] = Directions.random();

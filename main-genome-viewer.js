@@ -9,7 +9,7 @@ Simulation.init({
     showScoreboard: false,
     showGenomeViewer: true,
     stepsPerSecond: 2,
-    genomeLength: 7
+    genomeLength: 12
 });
 
 var draw = function() {
