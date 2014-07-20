@@ -46,20 +46,20 @@ var CrossoverViewer = {
         rect(0, 0, width, height);
     },
 
-    drawBigCharacter: function(c, y) {
+    drawBigText: function(s, y) {
         fill(0, 0, 0);
-        var font = createFont("sans-serif", 60);
+        var font = createFont("sans-serif", 36);
         textFont(font);
         textAlign(CENTER, TOP);
-        text(c, width / 2, y);
+        text(s, width / 2, y);
     },
 
     drawPlus: function() {
-        this.drawBigCharacter("+", 36);
+        this.drawBigText("breeds with", 54);
     },
 
     drawEquals: function() {
-        this.drawBigCharacter("=", 124);
+        this.drawBigText("to create", 142);
     },
 
     draw: function() {
