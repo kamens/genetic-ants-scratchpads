@@ -19,9 +19,17 @@ var Genome = function(length, options) {
         return this.directions[++this.currentIndex];
     };
 
-    this.createCrossoverWith = function(genomeB) {
+    this.createCrossoverWith = function(genomeB, overrides) {
         // Pick a crossover point somewhere in the middle of the genome
         var crossoverPoint = randInt(1, length - 2);
+        var parentAFirst = randBool();
+
+        if (overrides && overrides.crossoverPoint !== null) {
+            crossoverPoint = overrides.crossoverPoint;
+        }
+        if (overrides && overrides.parentAFirst !== null) {
+            parentAFirst = overrides.parentAFirst;
+        }
 
         var a1 = this.directions.slice(0, crossoverPoint);
         var a2 = this.directions.slice(crossoverPoint, length);
@@ -30,7 +38,7 @@ var Genome = function(length, options) {
         var b2 = genomeB.directions.slice(crossoverPoint, length);
 
         var part1, part2, firstParent, secondParent;
-        if (randBool()) {
+        if (parentAFirst) {
             part1 = a1;
             part2 = b2;
             firstParent = GenomeParent.ParentA;
@@ -45,6 +53,7 @@ var Genome = function(length, options) {
         var crossover = new Genome(length);
         crossover.directions = part1.concat(part2);
         crossover.ancestorInfo = {
+            mutationPoints: [],
             crossoverPoint: crossoverPoint,
             firstParent: firstParent,
             secondParent: secondParent
@@ -52,10 +61,11 @@ var Genome = function(length, options) {
 
         if (random(0, 1) < this.mutationRate) {
             // Random mutation!
-            var numMutations = randInt(0, 5);
+            var numMutations = randInt(1, 4);
             for (var i = 0; i < numMutations; i++) {
                 var mutationPoint = randInt(0, length - 1);
                 crossover.directions[mutationPoint] = Directions.random();
+                crossover.ancestorInfo.mutationPoints.push(mutationPoint);
             }
         }
             

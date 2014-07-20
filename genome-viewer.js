@@ -11,6 +11,7 @@ var GenomeViewer = function(ant, options) {
     this.textRGB = [0, 0, 0];
     this.highlightCurrentIndex = false;
     this.onlyShowGenomeFromParent = null;
+    this.onlyShowMutations = false;
 
     for (var key in options) {
         this[key] = options[key];
@@ -90,20 +91,47 @@ var GenomeViewer = function(ant, options) {
             var directionsSecondParent = directions.slice(crossoverPoint,
                         directions.length);
 
-            var prefixWidth, directionsToDraw;
+            var prefixWidth, textToDraw;
             if (this.onlyShowGenomeFromParent === firstParent) {
                 prefixWidth = this.directionTextWidth([]);
-                directionsToDraw = directionsFirstParent;
+                textToDraw = this.genomeAsText(directionsFirstParent);
+                if (directionsSecondParent.length) {
+                    textToDraw += ",";
+                }
             } else {
                 prefixWidth = this.directionTextWidth(directionsFirstParent);
-                directionsToDraw = directionsSecondParent;
+                textToDraw = this.genomeAsText(directionsSecondParent);
             }
 
             this.setTextProperties(this.textRGB);
-            text(this.genomeAsText(directionsToDraw),
+            text(textToDraw,
                     this.left + 60 + prefixWidth,
                     this.top + 15);
 
+        } else if (this.onlyShowMutations) {
+            var mutationPoints = this.ant.genome.ancestorInfo.mutationPoints;
+            mutationPoints = mutationPoints.slice(0);
+            mutationPoints = mutationPoints.sort();
+
+            var pointsDrawn = false;
+            for (var i = 0; i < mutationPoints.length; i++) {
+                var mutationPoint = mutationPoints[i];
+                if (mutationPoint >= directions.length) {
+                    continue;
+                }
+
+                var directionsPreceding = directions.slice(0, mutationPoint);
+
+                var prefixWidth = this.directionTextWidth(directionsPreceding);
+
+                var directionsMutation = [directions[mutationPoint]];
+                this.setTextProperties(this.textRGB);
+                text(this.genomeAsText(directionsMutation),
+                        this.left + 60 + prefixWidth,
+                        this.top + 15);
+
+                pointsDrawn = true;
+            }
         } else {
             var genomeText = "= " + this.genomeAsText(directions) + "...";
 
