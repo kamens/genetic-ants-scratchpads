@@ -48,20 +48,17 @@ var CrossoverViewer = {
             textRGB: [121, 169, 70]
         });
         this.genomeViewerC = new GenomeViewer(this.antC, {
-            textRGB: [4, 167, 220, 0]
+            showBackground: false,
+            textRGB: [4, 167, 220]
         });
 
         this.genomeViewerCParentA = new GenomeViewer(this.antC, {
-            top: 160,
-            textRGB: [0, 0, 0, 180],
             showBackground: false,
             showAnt: false,
             onlyShowGenomeFromParent: GenomeParent.ParentA
         });
 
         this.genomeViewerCParentB = new GenomeViewer(this.antC, {
-            top: 140,
-            textRGB: [0, 0, 0, 180],
             showBackground: false,
             showAnt: false,
             onlyShowGenomeFromParent: GenomeParent.ParentB
@@ -93,27 +90,63 @@ var CrossoverViewer = {
     },
 
     slideInGenomeViewerA: function() {
-        var finalTop = 6;
-        var top = finalTop + ((height - finalTop) *
+        var endTop = 6;
+        var top = endTop + ((height - endTop) *
                 (1 - this.percentForCurrentAnimation(0.0, 0.05)));
         this.genomeViewerA.top = top;
         this.genomeViewerA.draw();
     },
 
     slideInGenomeViewerB: function() {
-        var finalTop = 96;
-        var top = finalTop + ((height - finalTop) *
+        var endTop = 96;
+        var top = endTop + ((height - endTop) *
                 (1 - this.percentForCurrentAnimation(0.3, 0.35)));
         this.genomeViewerB.top = top;
         this.genomeViewerB.draw();
     },
 
     slideInGenomeViewerC: function() {
-        var finalTop = 180;
-        var top = finalTop + ((height - finalTop) *
-                (1 - this.percentForCurrentAnimation(0.6, 0.65)));
+        var alpha = 255 * this.percentForCurrentAnimation(0.95, 0.99);
+        this.genomeViewerC.textRGB[3] = alpha;
+
+        var endTop = 180;
+        var top = endTop + ((height - endTop) *
+                (1 - this.percentForCurrentAnimation(0.7, 0.88)));
         this.genomeViewerC.top = top;
         this.genomeViewerC.draw();
+    },
+
+    fadeAndSlideGenomeViewerCParentA: function() {
+        var alpha = 255 * this.percentForCurrentAnimation(0.67, 0.68);
+        var rgb = this.genomeViewerA.textRGB.slice(0);
+        rgb[3] = alpha;
+        this.genomeViewerCParentA.textRGB = rgb;
+
+        var startTop = this.genomeViewerA.top;
+        var endTop = this.genomeViewerC.top;
+        this.genomeViewerCParentA.top = startTop + (
+                ((endTop - startTop) *
+                 this.percentForCurrentAnimation(0.7, 0.88)));
+
+        this.genomeViewerCParentA.left = this.genomeViewerA.left;
+
+        this.genomeViewerCParentA.draw();
+    },
+
+    fadeAndSlideGenomeViewerCParentB: function() {
+        var alpha = 255 * this.percentForCurrentAnimation(0.67, 0.68);
+        var rgb = this.genomeViewerB.textRGB.slice(0);
+        rgb[3] = alpha;
+        this.genomeViewerCParentB.textRGB = rgb;
+
+        var startTop = this.genomeViewerB.top;
+        var endTop = this.genomeViewerC.top;
+        this.genomeViewerCParentB.top = startTop + (
+                ((endTop - startTop) *
+                 this.percentForCurrentAnimation(0.7, 0.88)));
+
+        this.genomeViewerCParentB.left = this.genomeViewerB.left;
+        this.genomeViewerCParentB.draw();
     },
 
     percentForCurrentAnimation: function(startFadeIn, endFadeIn) {
@@ -140,11 +173,11 @@ var CrossoverViewer = {
 
         this.slideInGenomeViewerA();
         this.slideInGenomeViewerB();
-        this.slideInGenomeViewerC();
 
-        // STOPSHIP(kamens)
-        //this.genomeViewerCParentA.draw();
-        //this.genomeViewerCParentB.draw();
+        this.fadeAndSlideGenomeViewerCParentA();
+        this.fadeAndSlideGenomeViewerCParentB();
+
+        this.slideInGenomeViewerC();
 
         this.fadeInBreedsWith();
         this.fadeInToCreate();
