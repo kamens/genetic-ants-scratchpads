@@ -20,6 +20,7 @@ var Simulation = {
 
     showScoreboard: true,
     showGenomeViewer: null,
+    genomeViewer: null,
 
     init: function(options) {
         for (var key in options) {
@@ -33,6 +34,10 @@ var Simulation = {
         Scoreboard.possibleFitness = Board.path.length;
         
         this.prepareNextGeneration();
+
+        if (this.showGenomeViewer) {
+            this.genomeViewer = new GenomeViewer(this.ants[0]);
+        }
     },
 
     step: function() {
@@ -63,8 +68,8 @@ var Simulation = {
             Scoreboard.draw();
         }
 
-        if (this.showGenomeViewer) {
-            GenomeViewer.draw(this.ants[0]);
+        if (this.genomeViewer) {
+            this.genomeViewer.draw();
         }
     },
 

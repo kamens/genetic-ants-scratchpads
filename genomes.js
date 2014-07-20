@@ -1,8 +1,12 @@
 
-var Genome = function(length) {
+var Genome = function(length, options) {
     this.directions = [];
     this.currentIndex = -1;
     this.mutationRate = 0.4;
+
+    for (var key in options) {
+        this[key] = options[key];
+    }
 
     this.nextDirection = function() {
         return this.directions[++this.currentIndex];

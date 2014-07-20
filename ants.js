@@ -1,5 +1,5 @@
 
-var Ant = function(genome) {
+var Ant = function(genome, options) {
 
     this.genome = genome;
     this.fitness = 0;
@@ -9,10 +9,16 @@ var Ant = function(genome) {
     this.position = [Board.path[0][0], Board.path[0][1]];
     this.lastPosition = [Board.path[0][0], Board.path[0][1]];
 
-    this.img = getImage("avatars/piceratops-seed");
+    this.imgSrc = "avatars/piceratops-seed";
     this.height = 50;
     this.width = 50;
     this.negativeMargin = 3;
+
+    for (var key in options) {
+        this[key] = options[key];
+    }
+
+    this.img = getImage(this.imgSrc);
 
     this.step = function() {
         this.lastPosition[0] = this.position[0];
