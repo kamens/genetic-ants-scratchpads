@@ -14,14 +14,6 @@ var Ant = function(genome) {
     this.width = 50;
     this.negativeMargin = 3;
 
-    this.desc = function() {
-        var s = [];
-        for (var i = 0; i < this.genome.directions.length; i++) {
-            s.push(this.genome.directions[i]);
-        }
-        return s.join(",");
-    };
-
     this.step = function() {
         this.lastPosition[0] = this.position[0];
         this.lastPosition[1] = this.position[1];

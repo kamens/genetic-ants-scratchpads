@@ -1,11 +1,11 @@
 
 var Genome = function(length) {
     this.directions = [];
-    this.currentIndex = 0;
+    this.currentIndex = -1;
     this.mutationRate = 0.4;
 
     this.nextDirection = function() {
-        return this.directions[this.currentIndex++];
+        return this.directions[++this.currentIndex];
     };
 
     this.createCrossoverWith = function(genomeB) {
@@ -39,6 +39,14 @@ var Genome = function(length) {
         }
             
         return crossover;
+    };
+
+    this.descriptions = function() {
+        var descriptions = [];
+        for (var i = 0; i < this.directions.length; i++) {
+            descriptions.push(Directions.getDescription(this.directions[i]));
+        }
+        return descriptions;
     };
 
     this.randomize = function() {

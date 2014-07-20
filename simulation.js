@@ -1,19 +1,13 @@
 
-// Canvas size: 600 x 184
-//
-// Perhaps nice visualization:
-//  frameRate 50
-//  stepsPerSecond 25
-//  antsPerGeneration 10
-
 var Simulation = {
 
     generation: 0,
     maxGenerations: 250,
 
     stepsThisGeneration: 0,
+
     // 20 extra steps allowed around the board
-    maxStepsPerGeneration: Board.path.length + 20,
+    genomeLength: Board.path.length + 20,
 
     frameRate: 50,
     stepsPerSecond: 25,
@@ -24,7 +18,14 @@ var Simulation = {
     antsPerGeneration: 10,
     ants: null,
 
-    init: function() {
+    showScoreboard: true,
+    showGenomeViewer: null,
+
+    init: function(options) {
+        for (var key in options) {
+            this[key] = options[key];
+        }
+
         frameRate(this.frameRate);
         this.framesPerStep = ceil(this.frameRate / this.stepsPerSecond);
 
@@ -58,7 +59,13 @@ var Simulation = {
             ant.draw(percentStepComplete);
         }
 
-        Scoreboard.draw();
+        if (this.showScoreboard) {
+            Scoreboard.draw();
+        }
+
+        if (this.showGenomeViewer) {
+            GenomeViewer.draw(this.ants[0]);
+        }
     },
 
     updateScoreboard: function() {
@@ -100,7 +107,7 @@ var Simulation = {
     createNewAnts: function() {
         this.ants = [];
         for (var i = 0; i < this.antsPerGeneration; i++) {
-            var genome = new Genome(this.maxStepsPerGeneration);
+            var genome = new Genome(this.genomeLength);
             var ant = new Ant(genome);
             this.ants.push(ant);
         }
@@ -121,7 +128,7 @@ var Simulation = {
         }
 
         // Always include the top ant
-        var topGenome = new Genome(this.maxStepsPerGeneration);
+        var topGenome = new Genome(this.genomeLength);
         topGenome.directions = topAnt.genome.directions.slice(0);
         this.nextGenAnts = [new Ant(topGenome)];
 
@@ -153,7 +160,7 @@ var Simulation = {
     },
 
     prepareNextFrame: function() {
-        if (this.stepsThisGeneration >= this.maxStepsPerGeneration) {
+        if (this.stepsThisGeneration >= this.genomeLength) {
             if (!this.prepareNextGeneration()) {
                 return false;
             }
@@ -163,24 +170,7 @@ var Simulation = {
             this.step();
         }
 
-        // STOPSHIP(kamens);
-        if (Scoreboard.maxFitness === Scoreboard.possibleFitness) {
-            noLoop();
-            println("WOOHOO");
-        }
-
         return true;
     }
 
-};
-
-Simulation.init();
-
-var draw = function() {
-    if (!Simulation.prepareNextFrame()) {
-        noLoop();
-        return;
-    }
-
-    Simulation.draw();
 };

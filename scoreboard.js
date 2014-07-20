@@ -12,13 +12,17 @@ var Scoreboard = {
         return ceil((this.maxFitness / this.possibleFitness) * 100) + "%";
     },
 
-    draw: function() {
+    drawBackground: function() {
         noStroke();
         fill(255, 255, 255);
         rect(0,
                 0,
                 width,
                 this.height);
+    },
+
+    draw: function() {
+        this.drawBackground();
 
         if (this.generation > 0) {
             var msg = ("Smartest ant in generation " + this.generation +

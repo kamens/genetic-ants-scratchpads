@@ -7,6 +7,14 @@ var randBool = function() {
     return randInt(0, 1) === 0;
 };
 
+var createSpaces = function(spaces) {
+    var s = [];
+    for (var i = 0; i < spaces; i++) {
+        s.push(" ");
+    }
+    return s.join("");
+};
+
 var Directions = {
     left: 0,
     right: 1,
@@ -23,6 +31,18 @@ var Directions = {
             return this.up;
         } else if (rand === this.down) {
             return this.down;
+        }
+    },
+
+    getDescription: function(dir) {
+        if (dir === this.left) {
+            return "Left";
+        } else if (dir === this.right) {
+            return "Right";
+        } else if (dir === this.up) {
+            return "Up";
+        } else if (dir === this.down) {
+            return "Down";
         }
     }
 };
