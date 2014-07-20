@@ -24,7 +24,9 @@ var CrossoverViewer = {
         this.genomeC = this.genomeA.createCrossoverWith(this.genomeB);
 
         this.antA = new Ant(this.genomeA);
-        this.antB = new Ant(this.genomeB, { imgSrc: "avatars/leafers-seed" });
+        this.antB = new Ant(this.genomeB, {
+            imgSrc: "avatars/leafers-seed"
+        });
         this.antC = new Ant(this.genomeC, {
             imgSrc: "avatars/spunky-sam"
         });

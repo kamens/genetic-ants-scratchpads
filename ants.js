@@ -18,7 +18,16 @@ var Ant = function(genome, options) {
         this[key] = options[key];
     }
 
-    this.img = getImage(this.imgSrc);
+    // There's a rare bug involving passing variables into getImage that stops
+    // us from being able to directly pass in the image source.
+    // TODO(kamens): understand/fix this
+    if (this.imgSrc === "avatars/piceratops-seed") {
+        this.img = getImage("avatars/piceratops-seed");
+    } else if (this.imgSrc === "avatars/leafers-seed") {
+        this.img = getImage("avatars/leafers-seed");
+    } else if (this.imgSrc === "avatars/spunky-sam") {
+        this.img = getImage("avatars/spunky-sam");
+    }
 
     this.step = function() {
         this.lastPosition[0] = this.position[0];
