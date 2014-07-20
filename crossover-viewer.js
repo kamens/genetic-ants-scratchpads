@@ -4,7 +4,7 @@ var CrossoverViewer = {
     frameRate: 50,
     currentFrame: 0,
 
-    animationSeconds: 6,
+    animationSeconds: 5,
     percentAnimationComplete: 0,
 
     genomeLength: 12,
@@ -111,13 +111,13 @@ var CrossoverViewer = {
 
         var endTop = 180;
         var top = endTop + ((height - endTop) *
-                (1 - this.percentForCurrentAnimation(0.7, 0.88)));
+                (1 - this.percentForCurrentAnimation(0.55, 0.6)));
         this.genomeViewerC.top = top;
         this.genomeViewerC.draw();
     },
 
     fadeAndSlideGenomeViewerCParentA: function() {
-        var alpha = 255 * this.percentForCurrentAnimation(0.67, 0.68);
+        var alpha = 255 * this.percentForCurrentAnimation(0.54, 0.55);
         var rgb = this.genomeViewerA.textRGB.slice(0);
         rgb[3] = alpha;
         this.genomeViewerCParentA.textRGB = rgb;
@@ -126,7 +126,7 @@ var CrossoverViewer = {
         var endTop = this.genomeViewerC.top;
         this.genomeViewerCParentA.top = startTop + (
                 ((endTop - startTop) *
-                 this.percentForCurrentAnimation(0.7, 0.88)));
+                 this.percentForCurrentAnimation(0.55, 0.65)));
 
         this.genomeViewerCParentA.left = this.genomeViewerA.left;
 
@@ -134,7 +134,7 @@ var CrossoverViewer = {
     },
 
     fadeAndSlideGenomeViewerCParentB: function() {
-        var alpha = 255 * this.percentForCurrentAnimation(0.67, 0.68);
+        var alpha = 255 * this.percentForCurrentAnimation(0.54, 0.55);
         var rgb = this.genomeViewerB.textRGB.slice(0);
         rgb[3] = alpha;
         this.genomeViewerCParentB.textRGB = rgb;
@@ -143,7 +143,7 @@ var CrossoverViewer = {
         var endTop = this.genomeViewerC.top;
         this.genomeViewerCParentB.top = startTop + (
                 ((endTop - startTop) *
-                 this.percentForCurrentAnimation(0.7, 0.88)));
+                 this.percentForCurrentAnimation(0.55, 0.65)));
 
         this.genomeViewerCParentB.left = this.genomeViewerB.left;
         this.genomeViewerCParentB.draw();
